@@ -1,0 +1,65 @@
+<script setup lang="ts">
+  import headers from '../../utils/headers'
+  import { onMounted, ref } from 'vue';
+  import { useRoute, RouterLink } from 'vue-router';
+
+  const route = useRoute();
+  const { id } = route.params;
+  
+  const actor = ref<Actor>({
+    firstName: undefined,
+    lastName: undefined
+  });
+  
+  onMounted( async () => {
+    actor.value = await fetch(`http://localhost:8088/s5/public/index.php/api/actors/${ id }`, headers)
+      .then(res => res.json())
+  })
+
+</script>
+
+<template>
+  <section v-show="actor.firstName">
+    <strong>{{ actor.firstName }} {{ actor.lastName }}</strong><br />
+    <b>Filmographie</b>
+    <div class="movies-list">
+      <router-link 
+        v-for="movie in actor.movies" 
+        :to="{ path: `/movies/${ movie.id }` }"
+        class="movie"
+      >
+        {{ movie.title }}
+      </router-link>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+  strong {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+
+  b {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+  }
+
+  .movies-list {
+    flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .movie {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #F7F7F7;
+    border-radius: 4px;
+    margin-bottom: 36px;
+  }
+</style>

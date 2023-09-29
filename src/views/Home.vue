@@ -2,9 +2,8 @@
 import { onMounted, ref } from 'vue';
 import headers from '../utils/headers';
 
-  const films = ref();
-  const actors = ref();
-  const categories = ref();
+  const films = ref<Movie[]>();
+  const actors = ref<Actors[]>();
 
   onMounted( async () => {
     films.value = await fetch('http://localhost:8088/s5/public/index.php/api/movies', headers)
@@ -14,9 +13,6 @@ import headers from '../utils/headers';
     actors.value = await fetch('http://localhost:8088/s5/public/index.php/api/actors', headers)
       .then(res => res.json())
       .then(datas => datas.slice(0, 4))
-
-    categories.value = await fetch('http://localhost:8088/s5/public/index.php/api/categories', headers)
-      .then(res => res.json())
   })
 </script>
 
@@ -25,7 +21,7 @@ import headers from '../utils/headers';
     <strong>Films</strong>
     <div class="films-list">
       <router-link 
-        :to="{ path: '/movies' }"
+        :to="{ path: `/movies/${film.id}` }"
         v-for="film in films"
         class="film"
       >
@@ -38,7 +34,7 @@ import headers from '../utils/headers';
     <strong>Acteurs</strong>
     <div class="actors-list">
       <router-link 
-        :to="{ path: '/acteurs' }"
+        :to="{ path: `/actors/${actor.id}` }"
         v-for="actor in actors"
         class="actor"
       >

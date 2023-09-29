@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import headers from '../utils/headers';
+  import { onMounted, ref } from 'vue';
+  import headers from '../../utils/headers';
 
-  const films = ref();
+  const films = ref<Movie[]>();
 
   onMounted( async () => {
     films.value = await fetch('http://localhost:8088/s5/public/index.php/api/movies', headers)
       .then(res => res.json())
   })
+
 </script>
 
 <template>
@@ -15,7 +16,7 @@ import headers from '../utils/headers';
     <strong>Films</strong>
     <div class="films-list">
       <router-link 
-        :to="{ path: '/movies' }"
+        :to="{ path: `/movies/${film.id}` }"
         v-for="film in films"
         class="film"
       >

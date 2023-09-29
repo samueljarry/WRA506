@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import headers from '../utils/headers';
+  import { onMounted, ref } from 'vue';
+  import headers from '../../utils/headers';
 
-  const actors = ref();
+  const actors = ref<Actors[]>();
 
   onMounted( async () => {
     actors.value = await fetch('http://localhost:8088/s5/public/index.php/api/actors', headers)
@@ -15,7 +15,7 @@ import headers from '../utils/headers';
     <strong>Acteurs</strong>
     <div class="actors-list">
       <router-link 
-        :to="{ path: '/actors' }"
+        :to="{ path: `/actors/${actor.id}` }"
         v-for="actor in actors"
         class="actor"
       >
