@@ -2,18 +2,21 @@
   import headers from '../../utils/headers'
   import { onMounted, ref } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
+  import { ApiRoutesId } from '../../constants/ApiRoutesId';
 
   const route = useRoute();
   const { id } = route.params;
   
-  const actor = ref<Actor>({
+  const actor = ref<Actor | {[key:string]: undefined}>({
     firstName: undefined,
     lastName: undefined
   });
   
   onMounted( async () => {
-    actor.value = await fetch(`http://localhost:8088/s5/public/index.php/api/actors/${ id }`, headers)
-      .then(res => res.json())
+    actor.value = await fetch(
+      `${ ApiRoutesId.ACTORS }/${ id }`, 
+      headers
+    ).then((res: Response) => res.json())
   })
 
 </script>

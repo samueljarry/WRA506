@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
   import headers from '../../utils/headers';
+import { ApiRoutesId } from '../../constants/ApiRoutesId';
 
   const films = ref<Movie[]>();
   const categories = ref<Category[]>();
@@ -11,23 +12,31 @@
   const togglePage = async (targetPage: number) => {
     page.value = Math.min(Math.max(page.value+targetPage, 1), 4);
     
-    filteredMovies.value = await fetch(`http://localhost:8088/s5/public/index.php/api/movies?num=10&page=${page.value}`, headers)
-      .then(res => res.json())
+    filteredMovies.value = await fetch(
+      `${ApiRoutesId.MOVIES}?num=10&page=${page.value}`, 
+      headers
+    ).then(res => res.json())
   }
 
   const filterCategory = async () => {
-    filteredMovies.value = await fetch(`http://localhost:8088/s5/public/index.php/api/movies?title=${research.value}`, headers)
-      .then(res => res.json())
+    filteredMovies.value = await fetch(
+      `${ApiRoutesId.MOVIES}?title=${research.value}`, 
+      headers
+    ).then(res => res.json())
   }
 
   onMounted( async () => {
-    films.value = await fetch('http://localhost:8088/s5/public/index.php/api/movies?num=10&page=1', headers)
-      .then(res => res.json())
+    films.value = await fetch(
+      `${ApiRoutesId.MOVIES}?num=10&page=1`,
+      headers
+    ).then(res => res.json())
 
     filteredMovies.value = films.value;
 
-    categories.value = await fetch('http://localhost:8088/s5/public/index.php/api/categories', headers)
-      .then(res => res.json())
+    categories.value = await fetch(
+      ApiRoutesId.CATEGORIES, 
+      headers
+    ).then(res => res.json())
   })
 
 </script>

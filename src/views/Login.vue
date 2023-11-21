@@ -1,6 +1,7 @@
 <script lang="ts">
 import { ApiRoutesId } from '../constants/ApiRoutesId';
 import { HTTPResponseId } from '../constants/HTTPResponsesId';
+import { LocalStorageId } from '../constants/LocalStorageId';
 
 type AuthResponse = {
   message: string;
@@ -20,31 +21,33 @@ export default {
   },
   methods: {
     async submitCredentials() {
-      const request: AuthResponse = await fetch(ApiRoutesId.AUTHENTICATION, {
-        body: JSON.stringify({
-          email: this.formData.email,
-          password: this.formData.password
-        }),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: 'post',
-        })
-      .then((res: Response) => res.json());
+      const request: AuthResponse = await fetch(
+        ApiRoutesId.AUTHENTICATION, 
+        {
+          body: JSON.stringify({
+            email: this.formData.email,
+            password: this.formData.password
+          }),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+        }
+      ).then((res: Response) => res.json())
+      .catch((err: Error) => console.error(err));
 
       const { token, code, message } = request
 
       if(code === HTTPResponseId.UNAUTHORIZED) {
         this.status = message;
       } else {
-        localStorage.setItem('token', token);
+        localStorage.setItem(LocalStorageId.AUTH_TOKEN, token);
         this.status = '';
       }
     }
   }
 }
-
 </script>
 
 <template>

@@ -4,7 +4,7 @@ declare type Movie = {
   title: string;
   duration: number;
   id: number;
-  releaseDate: string;
+  releaseDate: Date;
   description: string;
   actor: Actor[];
   category: {
@@ -27,3 +27,5 @@ declare type Category = {
   name: string;
   movies: Movie[];
 }
+
+declare type UndefinedObject = { [key: string]: undefined | { [key: string]: undefined } }

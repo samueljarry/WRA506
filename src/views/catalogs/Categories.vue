@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import headers from '../../utils/headers';
+import { ApiRoutesId } from '../../constants/ApiRoutesId';
 
   const categories = ref<Category[]>();
 
   onMounted( async () => {
-    categories.value = await fetch('http://localhost:8088/s5/public/index.php/api/categories', headers)
-      .then(res => res.json())
+    categories.value = await fetch(
+      ApiRoutesId.CATEGORIES, 
+      headers
+    ).then((res: Response) => res.json())
   })
 </script>
 

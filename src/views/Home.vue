@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import headers from '../utils/headers';
+import { ApiRoutesId } from '../constants/ApiRoutesId';
 
   const films = ref<Movie[]>();
   const actors = ref<Actor[]>();
 
   onMounted( async () => {
-    films.value = await fetch('http://localhost:8088/s5/public/index.php/api/movies', headers)
-      .then(res => res.json())
-      .then(datas => datas.slice(0, 4))
+    films.value = await fetch(ApiRoutesId.MOVIES, headers)
+      .then((res: Response) => res.json())
+      .then((datas: Movie[]) => datas.slice(0, 4))
 
-    actors.value = await fetch('http://localhost:8088/s5/public/index.php/api/actors', headers)
-      .then(res => res.json())
-      .then(datas => datas.slice(0, 4))
+    actors.value = await fetch(ApiRoutesId.ACTORS, headers)
+      .then((res: Response) => res.json())
+      .then((datas: Actor[]) => datas.slice(0, 4))
   })
 </script>
 
