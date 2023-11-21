@@ -5,6 +5,7 @@ import Movies from './views/catalogs/Movies.vue';
 import Categories from './views/catalogs/Categories.vue';
 import Actor from './views/content/Actor.vue';
 import Movie from './views/content/Movie.vue';
+import Login from './views/Login.vue';
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -27,6 +28,11 @@ export const routes: RouteRecordRaw[] = [
     component: Categories,
     name: 'Catégories'
   },
+  {
+    path: '/login',
+    component: Login,
+    name: 'Connexion'
+  }
 ]
 
 const router = createRouter({

@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import headers from '../utils/headers';
 
   const films = ref<Movie[]>();
-  const actors = ref<Actors[]>();
+  const actors = ref<Actor[]>();
 
   onMounted( async () => {
     films.value = await fetch('http://localhost:8088/s5/public/index.php/api/movies', headers)
