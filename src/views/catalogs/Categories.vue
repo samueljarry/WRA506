@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import headers from '../../utils/headers';
 import { ApiRoutesId } from '../../constants/ApiRoutesId';
+import Card from 'primevue/card';
 
   const categories = ref<Category[]>();
 
@@ -23,13 +24,16 @@ import { ApiRoutesId } from '../../constants/ApiRoutesId';
     >
       {{ category.name }}
       <div class="movies-list">
-        <router-link 
-          class="movie"
-          :to="{ path: `/movies/${ movie.id }` }"
-          v-for="movie in category.movies"
-        >
-          {{ movie.title }}
-        </router-link>
+        <Card v-for="movie in category.movies">
+          <template #content>
+            <router-link 
+              class="movie"
+              :to="{ path: `/movies/${ movie.id }` }"
+            >
+              {{ movie.title }}
+            </router-link>
+          </template>
+        </Card>
       </div>
     </strong>
   </section>

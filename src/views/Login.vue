@@ -2,6 +2,7 @@
 import { ApiRoutesId } from '../constants/ApiRoutesId';
 import { HTTPResponseId } from '../constants/HTTPResponsesId';
 import { LocalStorageId } from '../constants/LocalStorageId';
+import router from '../router';
 
 type AuthResponse = {
   message: string;
@@ -42,7 +43,9 @@ export default {
       if(code === HTTPResponseId.UNAUTHORIZED) {
         this.status = message;
       } else {
+        router.push('/');
         localStorage.setItem(LocalStorageId.AUTH_TOKEN, token);
+        localStorage.setItem(LocalStorageId.USERMAIL, this.formData.email);
         this.status = '';
       }
     }
@@ -66,7 +69,6 @@ export default {
   </form>
 
   <p class="status">{{ status }}</p>
-
 </template>
 
 <style lang="scss"> 
