@@ -13,8 +13,9 @@ import { inject, onMounted, ref } from 'vue';
 import { useActors } from '../hooks/useActors';
 import { useCategories } from '../hooks/useCategories';
 import { patchMovie } from '../utils/patchMovie';
+import { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
 
-  const dialogRef = inject('dialogRef');
+  const dialogRef = inject<DynamicDialogOptions>('dialogRef') as DynamicDialogOptions;
   const { data } = dialogRef.value;
   const movie = ref<Movie>(data);
   const categories = ref([])
@@ -27,25 +28,17 @@ import { patchMovie } from '../utils/patchMovie';
 
   movie.value.releaseDate = day + "/" + month + "/" + year;
 
-  const patchsMovie = async () => {
-    patchMovie(movie.value)  
-  }
-
-  onMounted(async () => {
-    const cat = await useCategories();
+  onMounted(async (): Promise<void> => {
+    categories.value = await useCategories();
     const act = await useActors();
-
-
     const actorsNames: Partial<Actor>[] = act.map((actor: Actor) => ({ name: actor.firstName +' '+ actor.lastName, id: actor.id }));
     
     const filteredActors = actorsNames.filter((nameObj: Partial<Actor>) =>
       data.actor.some((actor: Partial<Actor>) => actor.id === nameObj.id)
     );
 
-    categories.value = cat
     actors.value = actorsNames
-
-    movie.value.actors = filteredActors as Actor[]
+    movie.value.actor = filteredActors as Actor[]
   })
   
 </script>
@@ -78,7 +71,7 @@ import { patchMovie } from '../utils/patchMovie';
       </div>
       <div class="input-field">
         <label for="director">Réalisateur</label>
-        <InputText type="text" :value="movie.director"></InputText>
+        <InputText type="text" v-model="movie.director" :value="movie.director"></InputText>
       </div>
     </div>
     <div class="input-field">
@@ -92,7 +85,7 @@ import { patchMovie } from '../utils/patchMovie';
     <div class="input-field">
       <label for="actors">Acteurs</label>
       <MultiSelect 
-        v-model="movie.actors" 
+        v-model="movie.actor" 
         filter 
         class="multiselect" 
         id="actors" 
@@ -103,7 +96,7 @@ import { patchMovie } from '../utils/patchMovie';
       />
     </div>
     <template class="footer" #footer>
-        <Button @click="patchsMovie" class="valid-button">Valider</Button>
+        <Button @click="() => patchMovie(movie)" class="valid-button">Valider</Button>
     </template>
   </Panel>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue';
-  import headers from '../../utils/headers';
+  import defaultHeaders from '../../utils/headers';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
   import Card from 'primevue/card';
   import Button from 'primevue/button';
@@ -10,7 +10,7 @@
   onMounted( async () => {
     actors.value = await fetch(
       ApiRoutesId.ACTORS, 
-      headers
+      defaultHeaders
     ).then((res: Response) => res.json())
   })
 </script>

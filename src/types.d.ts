@@ -20,5 +20,5 @@ declare type Movie = {
   description: string;
   title: string;
   director: string;
-  actors: Array<Actor>;
+  actor: Array<Actor>;
 }

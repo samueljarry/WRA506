@@ -4,11 +4,13 @@
   import { useDialog } from 'primevue/usedialog';
   import { onMounted, ref } from 'vue';
   import MovieEditPanel from '../../components/MovieEditPanel.vue';
+  import MovieDeletePanel from '../../components/MovieDeletePanel.vue';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
   import { defaultDialogProps } from '../../utils/defaultDialogProps';
-  import headers from '../../utils/headers';
+  import defaultHeaders from '../../utils/headers';
   import Paginator from 'primevue/paginator';
   import InputText from 'primevue/inputtext';
+  import { MoviesAction } from '../../utils/MoviesAction';
 
   const films = ref<Movie[]>();
   const categories = ref<Category[]>();
@@ -23,14 +25,14 @@
     
     filteredMovies.value = await fetch(
       `${ApiRoutesId.MOVIES}?num=10&page=${page.value}`, 
-      headers
+      defaultHeaders
     ).then(res => res.json())
   }
 
   const filterCategory = async () => {
     filteredMovies.value = await fetch(
       `${ApiRoutesId.MOVIES}?title=${research.value}`, 
-      headers
+      defaultHeaders
     ).then(res => res.json())
   }
 
@@ -46,18 +48,40 @@
     visible.value = !visible.value;
   }
 
+  const showDeletePanel = (movie: Movie) => {
+    dialog.open(MovieDeletePanel, {
+      props: {
+        ...defaultDialogProps
+      },
+      data: {
+        ...movie
+      }
+    })
+  }
+
   onMounted( async () => {
-    films.value = await fetch(
-      `${ApiRoutesId.MOVIES}?num=10&page=1`,
-      headers
-    ).then(res => res.json())
+    const fetchMovies = async (): Promise<void> => {
+      const movies = await fetch(`${ApiRoutesId.MOVIES}?num=10&page=1`,defaultHeaders).then(res => res.json());
+      
+      films.value = movies;
+      filteredMovies.value = films.value;
+      research.value = ''
+    }
+    
+    await fetchMovies();
 
     filteredMovies.value = films.value;
 
     categories.value = await fetch(
       ApiRoutesId.CATEGORIES, 
-      headers
+      defaultHeaders
     ).then(res => res.json())
+
+    MoviesAction.Add(fetchMovies);
+
+    return () => {
+      MoviesAction.Remove(fetchMovies);
+    }
   })
 
 </script>
@@ -92,6 +116,9 @@
             </router-link>
             <div class="edit">
               <Button @click="() => showEditPanel(movie)" icon="pi pi-pencil" />
+            </div>
+            <div class="delete">
+              <Button severity="danger" @click="() => showDeletePanel(movie)" icon="pi pi-trash" />
             </div>
           </div>
         </template>
@@ -175,13 +202,14 @@
 
   .p-card {
     &:hover {
-      .edit {
+      .edit, .delete {
         opacity: 1;
         visibility: visible;
         transition: 0.2s ease;
       }
     }
-    .edit {
+    .edit, .delete {
+      cursor: pointer;
       visibility: hidden;
       opacity:0;
       margin: 0 10px;
@@ -193,6 +221,32 @@
         border: 2px solid #535bf2;
         color: #535bf2;
         background: #F5F5F5;
+
+        transition: 0.2s ease;
+
+        &:hover {
+          background: #535bf2;
+          color: #F5F5F5;
+          transition: 0.2s ease;
+        }
+      }
+    }
+
+    .delete { 
+      margin: 0;
+      button {
+        padding: 0.6em;
+        aspect-ratio: 1;
+        border: 2px solid #DD524C;
+        color: #DD524C;
+        background: #F5F5F5;
+        transition: 0.2s ease;
+
+        &:hover {
+          background: #DD524C;
+          color: #F5F5F5;
+          transition: 0.2s ease;
+        }
       }
     }
 

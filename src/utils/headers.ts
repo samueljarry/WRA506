@@ -1,7 +1,7 @@
-const headers: { headers: { [key: string]: string} } = {
+const defaultHeaders: { headers: { [key: string]: string} } = {
   headers: {
     "Accept": 'application/json'
   }
 }
 
-export default headers;
+export default defaultHeaders;

@@ -6,7 +6,7 @@
   
   const userMail = ref<string | null>();
 
-  const disconnect = () => {
+  const disconnect = (): void => {
     localStorage.clear();
     userMail.value = null;
     router.push('/');
