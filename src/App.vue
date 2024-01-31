@@ -13,7 +13,7 @@ import DynamicDialog from 'primevue/dynamicdialog';
   <DynamicDialog class="test" />
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
   main {
     padding: 0 100px;
     margin-top: 100px;
@@ -24,5 +24,9 @@ import DynamicDialog from 'primevue/dynamicdialog';
 
   ::v-deep(.p-dialog-mask.p-component-overlay) {
     background: #11111199 !important;
+  }
+
+  ul {
+    background:#F7F8F9;
   }
 </style>

@@ -8,4 +8,7 @@ export enum ApiRoutesId {
   ACTORS = ApiRoutesId.API + '/actors',
   CATEGORIES = ApiRoutesId.API + '/categories',
 
+  RAW_MOVIE = '/s5/public/index.php/api/movies/',
+  RAW_ACTOR = '/s5/public/index.php/api/actors/',
+  RAW_CATEGORY = '/s5/public/index.php/api/categories/',
 }
