@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import Nav from './components/Nav.vue';
+import DynamicDialog from 'primevue/dynamicdialog';
+
 </script>
 
 <template>
@@ -8,14 +10,23 @@ import Nav from './components/Nav.vue';
   <main>
     <RouterView />
   </main>
+  <DynamicDialog class="test" />
 </template>
 
-<style scoped>
+<style lang="scss">
   main {
     padding: 0 100px;
     margin-top: 100px;
     position: relative;
-    width: calc(100vw - 200px);
+    width: calc(100svw - 200px);
     height: fit-content;
+  }
+
+  ::v-deep(.p-dialog-mask.p-component-overlay) {
+    background: #11111199 !important;
+  }
+
+  ul {
+    background:#F7F8F9;
   }
 </style>

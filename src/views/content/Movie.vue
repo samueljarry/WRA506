@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import headers from '../../utils/headers'
+  import defaultHeaders from '../../utils/requests/headers'
   import { onMounted, ref } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
@@ -19,7 +19,7 @@
   onMounted( async () => {
     movie.value = await fetch(
       `${ ApiRoutesId.MOVIES }/${ id }`,
-       headers
+       defaultHeaders
     ).then((res: Response) => res.json());
 
     const releaseDate = new Date(movie.value.releaseDate as Date);
@@ -87,4 +87,4 @@
     border-radius: 4px;
     margin-bottom: 36px;
   }
-</style>
+</style>../../utils/requests/headers

@@ -7,5 +7,10 @@ export enum ApiRoutesId {
   MOVIES = ApiRoutesId.API + '/movies',
   ACTORS = ApiRoutesId.API + '/actors',
   CATEGORIES = ApiRoutesId.API + '/categories',
+  NATIONALITY = ApiRoutesId.API + '/nationalities',
 
+  RAW_MOVIE = '/s5/public/index.php/api/movies/',
+  RAW_ACTOR = '/s5/public/index.php/api/actors/',
+  RAW_CATEGORY = '/s5/public/index.php/api/categories/',
+  RAW_NATIONALITY = '/s5/public/index.php/api/nationalities/',
 }

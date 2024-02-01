@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import headers from '../utils/headers';
+import defaultHeaders from '../utils/requests/headers';
 import { ApiRoutesId } from '../constants/ApiRoutesId';
+import Card from 'primevue/card';
+import Button from 'primevue/button';
 
   const films = ref<Movie[]>();
   const actors = ref<Actor[]>();
 
   onMounted( async () => {
-    films.value = await fetch(ApiRoutesId.MOVIES, headers)
+    films.value = await fetch(ApiRoutesId.MOVIES, defaultHeaders)
       .then((res: Response) => res.json())
       .then((datas: Movie[]) => datas.slice(0, 4))
 
-    actors.value = await fetch(ApiRoutesId.ACTORS, headers)
+    actors.value = await fetch(ApiRoutesId.ACTORS, defaultHeaders)
       .then((res: Response) => res.json())
       .then((datas: Actor[]) => datas.slice(0, 4))
   })
@@ -21,26 +23,30 @@ import { ApiRoutesId } from '../constants/ApiRoutesId';
   <section>
     <strong>Films</strong>
     <div class="films-list">
-      <router-link 
-        :to="{ path: `/movies/${film.id}` }"
-        v-for="film in films"
-        class="film"
-      >
-        {{ film.title }}
-      </router-link>
+      <Card v-for="film in films" style="width: 20em">
+        <template #title>{{ film.title }}</template>
+        <template #content>{{ film.description.slice(0, 75) }}...</template>
+        <template #footer>
+          <router-link  :to="{ path: `/movies/${film.id}` }">
+            <Button icon="pi pi-check" label="Save" >Voir plus</Button>
+          </router-link>
+        </template>
+      </Card>
     </div>
   </section>
 
   <section>
     <strong>Acteurs</strong>
     <div class="actors-list">
-      <router-link 
-        :to="{ path: `/actors/${actor.id}` }"
-        v-for="actor in actors"
-        class="actor"
-      >
-        {{ actor.firstName }} {{ actor.lastName }}
-      </router-link>
+      <Card v-for="actor in actors" style="width: 25em">
+        <template #title>{{ actor.firstName }} {{ actor.lastName }}</template>
+        <template #subtitle>A joué(e) dans {{ actor.movies.length }} film(s)</template>
+        <template #footer>
+          <router-link  :to="{ path: `/actors/${actor.id}` }">
+            <Button icon="pi pi-check" label="Save" >Voir plus</Button>
+          </router-link>
+        </template>
+      </Card>
     </div>
   </section>
 </template>
@@ -61,6 +67,7 @@ import { ApiRoutesId } from '../constants/ApiRoutesId';
     justify-content: space-between;
     width: 100%;
     margin-bottom: 40px;
+    gap: 15px;
   }
 
   .actor, .film {
@@ -70,4 +77,4 @@ import { ApiRoutesId } from '../constants/ApiRoutesId';
     border-radius: 4px;
   }
 
-</style>
+</style>../utils/requests/headers
