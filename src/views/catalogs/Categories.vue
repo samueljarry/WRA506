@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import headers from '../../utils/headers';
+import defaultHeaders from '../../utils/requests/headers';
+import { ApiRoutesId } from '../../constants/ApiRoutesId';
+import Card from 'primevue/card';
 
   const categories = ref<Category[]>();
 
   onMounted( async () => {
-    categories.value = await fetch('http://localhost:8088/s5/public/index.php/api/categories', headers)
-      .then(res => res.json())
+    categories.value = await fetch(
+      ApiRoutesId.CATEGORIES, 
+      defaultHeaders
+    ).then((res: Response) => res.json())
   })
 </script>
 
@@ -20,13 +24,16 @@ import headers from '../../utils/headers';
     >
       {{ category.name }}
       <div class="movies-list">
-        <router-link 
-          class="movie"
-          :to="{ path: `/movies/${ movie.id }` }"
-          v-for="movie in category.movies"
-        >
-          {{ movie.title }}
-        </router-link>
+        <Card v-for="movie in category.movies">
+          <template #content>
+            <router-link 
+              class="movie"
+              :to="{ path: `/movies/${ movie.id }` }"
+            >
+              {{ movie.title }}
+            </router-link>
+          </template>
+        </Card>
       </div>
     </strong>
   </section>
@@ -68,4 +75,4 @@ import headers from '../../utils/headers';
     margin-bottom: 10px;
   }
 
-</style>
+</style>../../utils/requests/headers

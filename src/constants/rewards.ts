@@ -1,0 +1,1 @@
+export const rewards = ['Oscars', 'Grammies', 'Golden Globe', 'César', 'Aucun'];

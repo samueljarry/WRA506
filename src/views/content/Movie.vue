@@ -1,30 +1,34 @@
 <script setup lang="ts">
-  import headers from '../../utils/headers'
+  import defaultHeaders from '../../utils/requests/headers'
   import { onMounted, ref } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
+  import { ApiRoutesId } from '../../constants/ApiRoutesId';
 
   const route = useRoute();
   const { id } = route.params;
   
-  const date = ref<Date>();
+  const date = ref<string>();
   const duration = ref<string>();
-  const movie = ref<Movie>({
+  const movie = ref<Movie | UndefinedObject>({
     title: undefined,
     category: {
       name: undefined
-    }
+    },
   });
   
   onMounted( async () => {
-    movie.value = await fetch(`http://localhost:8088/s5/public/index.php/api/movies/${ id }`, headers)
-      .then(res => res.json())
+    movie.value = await fetch(
+      `${ ApiRoutesId.MOVIES }/${ id }`,
+       defaultHeaders
+    ).then((res: Response) => res.json());
 
-    const releaseDate = new Date(movie.value.releaseDate)
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const releaseDate = new Date(movie.value.releaseDate as Date);
+    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     date.value = releaseDate.toLocaleDateString('fr-FR', options)
 
-    const hours = Math.floor(movie.value.duration / 60)
-    const minutes = Math.floor(movie.value.duration - hours * 60)
+    const durationInSeconds = movie.value.duration as number;
+    const hours = Math.floor(durationInSeconds / 60);
+    const minutes = Math.floor(durationInSeconds - hours * 60);
 
     duration.value = `${hours} heure${hours > 1 ? 's' : '' } ${ minutes } ${ minutes > 1 ? 'minutes' : 'minute'}`
   })
@@ -36,7 +40,7 @@
     <strong>{{ movie.title }}</strong><br />
     <span><b>Date de sortie:</b> {{ date }}</span><br />
     <span><b>Synopsis:</b> {{ movie.description }}</span><br />
-    <span><b>Catégorie:</b> <span v-show="movie.category.name">{{ movie.category.name }}</span></span><br />
+    <span><b>Catégorie:</b> <span v-show="movie.category?.name">{{ movie.category?.name }}</span></span><br />
     <span><b>Durée:</b> {{ duration }}</span><br />
     <b>Casting</b>
     <div class="casting">
@@ -83,4 +87,4 @@
     border-radius: 4px;
     margin-bottom: 36px;
   }
-</style>
+</style>../../utils/requests/headers
