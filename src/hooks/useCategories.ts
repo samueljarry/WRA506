@@ -1,7 +1,7 @@
 import { ApiRoutesId } from "../constants/ApiRoutesId"
-import defaultHeaders from "../utils/headers"
+import defaultHeaders from "../utils/requests/headers"
 
-export const useCategories = async (): Promise<any> => {
+export const getCategories = async (): Promise<Category[]> => {
   const categories = await fetch(ApiRoutesId.CATEGORIES, defaultHeaders).then(res => res.json());
   return categories;
 }

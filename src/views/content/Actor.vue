@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import defaultHeaders from '../../utils/headers'
+  import defaultHeaders from '../../utils/requests/headers'
   import { onMounted, ref } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
@@ -65,4 +65,4 @@
     border-radius: 4px;
     margin-bottom: 36px;
   }
-</style>
+</style>../../utils/requests/headers

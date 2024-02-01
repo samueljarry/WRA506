@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { inject, ref } from 'vue';
 import Panel from 'primevue/panel';
-import { ApiRoutesId } from '../constants/ApiRoutesId';
+import { ApiRoutesId } from '../../constants/ApiRoutesId';
 import { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
-import defaultHeaders from '../utils/headers';
-import { MethodsId } from '../constants/MethodsId';
-import { MoviesAction } from '../utils/MoviesAction';
+import defaultHeaders from '../../utils/requests/headers';
+import { MethodsId } from '../../constants/MethodsId';
+import { MoviesAction } from '../../utils/actions/MoviesAction';
 
   const dialogRef = inject<DynamicDialogOptions>('dialogRef') as DynamicDialogOptions;
   const { data } = dialogRef.value;
@@ -81,4 +81,4 @@ import { MoviesAction } from '../utils/MoviesAction';
       }
     }
   }
-</style>
+</style>../utils/requests/headers../../utils/actions/MoviesAction

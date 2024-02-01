@@ -1,10 +1,10 @@
-import defaultHeaders from './headers';
-import { ApiRoutesId } from '../constants/ApiRoutesId';
-import { MethodsId } from '../constants/MethodsId';
+import defaultHeaders from '../headers';
+import { ApiRoutesId } from '../../../constants/ApiRoutesId';
+import { MethodsId } from '../../../constants/MethodsId';
 
 export const patchMovie = async ({ actor, category, ...movie }: Movie) => {
   const actorsRoutes = actor.map(({ id }: Partial<Actor>) => ApiRoutesId.RAW_ACTOR + id);
-  console.log(movie.director)
+  
   await fetch(ApiRoutesId.MOVIES + `/${movie.id}`, { 
     method: MethodsId.PATCH,
     headers: {

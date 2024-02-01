@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import defaultHeaders from '../utils/headers';
+import defaultHeaders from '../utils/requests/headers';
 import { ApiRoutesId } from '../constants/ApiRoutesId';
 import Card from 'primevue/card';
 import Button from 'primevue/button';
@@ -77,4 +77,4 @@ import Button from 'primevue/button';
     border-radius: 4px;
   }
 
-</style>
+</style>../utils/requests/headers

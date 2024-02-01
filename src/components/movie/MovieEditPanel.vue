@@ -10,27 +10,29 @@ import Calendar from 'primevue/calendar';
 import 'primevue/resources/primevue.min.css';
 import Textarea from "primevue/textarea";
 import { inject, onMounted, ref } from 'vue';
-import { useActors } from '../hooks/useActors';
-import { useCategories } from '../hooks/useCategories';
-import { patchMovie } from '../utils/patchMovie';
+import { getActors } from '../../hooks/useActors';
+import { getCategories } from '../../hooks/useCategories';
+import { patchMovie } from '../../utils/requests/movie/patchMovie';
 import { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
+import { MoviesAction } from '../../utils/actions/MoviesAction';
 
   const dialogRef = inject<DynamicDialogOptions>('dialogRef') as DynamicDialogOptions;
   const { data } = dialogRef.value;
+  
   const movie = ref<Movie>(data);
-  const categories = ref([])
+  const categories = ref<Category[]>([])
   const actors = ref<Partial<Actor>[]>([])
   
   const releaseDate = new Date(data.releaseDate);
   const day = ("0" + releaseDate.getDate()).slice(-2);
   const month = ("0" + (releaseDate.getMonth() + 1)).slice(-2);
-  const year = releaseDate.getFullYear().toString().substr(2);
+  const year = releaseDate.getFullYear().toString().substring(2);
 
   movie.value.releaseDate = day + "/" + month + "/" + year;
 
   onMounted(async (): Promise<void> => {
-    categories.value = await useCategories();
-    const act = await useActors();
+    categories.value = await getCategories();
+    const act = await getActors();
     const actorsNames: Partial<Actor>[] = act.map((actor: Actor) => ({ name: actor.firstName +' '+ actor.lastName, id: actor.id }));
     
     const filteredActors = actorsNames.filter((nameObj: Partial<Actor>) =>
@@ -40,6 +42,13 @@ import { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
     actors.value = actorsNames
     movie.value.actor = filteredActors as Actor[]
   })
+
+  const sendDatas = async (movie: Movie): Promise<void> => {
+    await patchMovie(movie);
+    MoviesAction.Dispatch();
+
+    dialogRef.value.close();
+  }
   
 </script>
 
@@ -58,8 +67,8 @@ import { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
         <Textarea rows="10" columns="1000" id="description" v-model="movie.description" type="text" :value="movie.description"></Textarea>
       </div>
       <div class="input-field">
-          <label for="description">Description</label>
-          <Calendar v-model="movie.releaseDate"  dateFormat="dd/mm/yy" />
+          <label for="releaseDate">Date de sortie</label>
+          <Calendar id="releaseDate" v-model="movie.releaseDate"  dateFormat="dd/mm/yy" />
         </div>
       <div class="input-field">
         <label for="duration">Durée (minutes)</label>
@@ -96,7 +105,7 @@ import { DynamicDialogOptions } from 'primevue/dynamicdialogoptions';
       />
     </div>
     <template class="footer" #footer>
-        <Button @click="() => patchMovie(movie)" class="valid-button">Valider</Button>
+        <Button @click="() => sendDatas(movie)" class="valid-button">Valider</Button>
     </template>
   </Panel>
 </template>

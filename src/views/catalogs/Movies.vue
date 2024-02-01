@@ -3,21 +3,21 @@
   import Card from 'primevue/card';
   import { useDialog } from 'primevue/usedialog';
   import { onMounted, ref } from 'vue';
-  import MovieEditPanel from '../../components/MovieEditPanel.vue';
-  import MovieDeletePanel from '../../components/MovieDeletePanel.vue';
+  import MovieEditPanel from '../../components/movie/MovieEditPanel.vue';
+  import MovieDeletePanel from '../../components/movie/MovieDeletePanel.vue';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
   import { defaultDialogProps } from '../../utils/defaultDialogProps';
-  import defaultHeaders from '../../utils/headers';
+  import defaultHeaders from '../../utils/requests/headers';
   import Paginator from 'primevue/paginator';
   import InputText from 'primevue/inputtext';
-  import { MoviesAction } from '../../utils/MoviesAction';
+  import { MoviesAction } from '../../utils/actions/MoviesAction';
+import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
 
   const films = ref<Movie[]>();
   const categories = ref<Category[]>();
   const filteredMovies = ref<Movie[]>();
   const research = ref('');
   const page = ref(1);
-  const visible = ref(true);
   const dialog = useDialog();
 
   const togglePage = async ({ page: pageNum }: { page: number }) => {
@@ -45,7 +45,6 @@
         ...movie
       }
     })
-    visible.value = !visible.value;
   }
 
   const showDeletePanel = (movie: Movie) => {
@@ -59,17 +58,25 @@
     })
   }
 
+  const showAddPanel = () => {
+    dialog.open(MovieAddPanel, {
+      props: {
+        ...defaultDialogProps
+      }
+    })
+  }
+
   onMounted( async () => {
     const fetchMovies = async (): Promise<void> => {
-      const movies = await fetch(`${ApiRoutesId.MOVIES}?num=10&page=1`,defaultHeaders).then(res => res.json());
-      
-      films.value = movies;
-      filteredMovies.value = films.value;
+      filteredMovies.value = await fetch(
+        `${ApiRoutesId.MOVIES}?num=10&page=${page.value}`,
+        defaultHeaders
+      ).then(res => res.json())
       research.value = ''
     }
     
-    await fetchMovies();
-
+    const movies = await fetch(`${ApiRoutesId.MOVIES}?num=10&page=1`, defaultHeaders).then(res => res.json());
+    films.value = movies;
     filteredMovies.value = films.value;
 
     categories.value = await fetch(
@@ -104,6 +111,7 @@
           template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
         />
       </div>
+      <Button style="background: #535bf2;" class="add" @click="showAddPanel">Ajouter un film</Button>
     </div>
     <div class="films-list">
       <Card v-for="movie in filteredMovies" style="width: 25em">
@@ -128,7 +136,6 @@
 </template>
 
 <style scoped>
-
   ::v-deep(.p-paginator) {
     gap: 10px;
   }
@@ -163,13 +170,13 @@
 
   .top {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     margin: 20px 0;
 
     .paginator-container {
       flex: 0.75;
       display: flex;
-      justify-content: center;
     }
   }
 
@@ -251,6 +258,7 @@
     }
 
   }
+
   input {
     padding: 5px 30px;
     background: #F5F5F5;
@@ -268,4 +276,4 @@
       margin-left: 10px;
     }
   }
-</style>
+</style>../../utils/requests/headers../../utils/actions/MoviesAction

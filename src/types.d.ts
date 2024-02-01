@@ -7,12 +7,14 @@ declare type Actor = {
   firstName: string;
   lastName: string;
   id: number;
+  nationality: Nationality;
   movies: Array<Movie>;
+  rewards: string;
 }
 
 declare type Movie = {
   id: number;
-  category: Array<Category>;
+  category: Category;
   entries: number;
   note: number;
   duration: number;
@@ -21,4 +23,9 @@ declare type Movie = {
   title: string;
   director: string;
   actor: Array<Actor>;
+}
+
+declare type Nationality = {
+  id: number;
+  name: string;
 }
