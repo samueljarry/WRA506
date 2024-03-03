@@ -31,6 +31,7 @@ declare type Movie = {
 
 declare type MediaObject = {
   filePath: string;
+  id: number;
 }
 
 declare type Nationality = {

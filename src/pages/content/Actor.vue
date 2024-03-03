@@ -25,6 +25,7 @@ import MovieCard from '../../components/movie/MovieCard.vue';
 <template>
   <section v-show="actor.firstName">
     <strong>{{ actor.firstName }} {{ actor.lastName }}</strong><br />
+    <span>Nationalité: {{ actor?.nationality?.name }}</span><br/>
     <b>Filmographie</b>
     <div class="movies-list">
       <MovieCard v-for="movie in actor.movies" :key="movie.id" :movie="movie" />

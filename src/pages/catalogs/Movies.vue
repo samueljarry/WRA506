@@ -51,7 +51,6 @@
         `${ApiRoutesId.MOVIES}?num=10&page=${page.value}`,
         defaultHeaders
       ).then(res => res.json())
-      research.value = ''
     }
     
     const movies = await fetch(`${ApiRoutesId.MOVIES}?num=10&page=1`, defaultHeaders).then(res => res.json());
@@ -148,11 +147,16 @@
     margin: 20px 0;
 
     .paginator-container {
+      pointer-events: none;
       position:absolute;
       display: flex;
       z-index: 0;
       width: calc(100% - 200px);
       justify-content: center;
+
+      * {
+        pointer-events: auto;
+      }
     }
   }
 

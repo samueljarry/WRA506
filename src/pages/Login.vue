@@ -3,6 +3,7 @@ import { ApiRoutesId } from '../constants/ApiRoutesId';
 import { HTTPResponseId } from '../constants/HTTPResponsesId';
 import { LocalStorageId } from '../constants/LocalStorageId';
 import router from '../router';
+import { LoginsAction } from '../utils/actions/LoginsAction';
 
 type AuthResponse = {
   message: string;
@@ -47,6 +48,7 @@ export default {
         localStorage.setItem(LocalStorageId.AUTH_TOKEN, token);
         localStorage.setItem(LocalStorageId.USERMAIL, this.formData.email);
         this.status = '';
+        LoginsAction.Dispatch()
       }
     }
   }

@@ -2,19 +2,18 @@
 import Button from 'primevue/button';
 import { useDialog } from 'primevue/usedialog';
 import { onMounted, ref } from 'vue';
-import MovieEditPanel from '../../components/movie/MovieEditPanel.vue';
-import MovieDeletePanel from '../../components/movie/MovieDeletePanel.vue';
 import { ApiRoutesId } from '../../constants/ApiRoutesId';
 import { defaultDialogProps } from '../../utils/defaultDialogProps';
 import defaultHeaders from '../../utils/requests/headers';
 import Paginator from 'primevue/paginator';
 import InputText from 'primevue/inputtext';
-import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
 import ActorCard from '../../components/actor/ActorCard.vue';
 import { ActorsAction } from '../../utils/actions/ActorsAction';
 import ActorAddPanel from '../../components/actor/ActorAddPanel.vue';
+import { LocalStorageId } from '../../constants/LocalStorageId';
 
 const actors = ref<Actor[]>();
+const userMail = ref<string | null>(localStorage.getItem(LocalStorageId.USERMAIL));
 const filteredActors = ref<Actor[]>();
 const research = ref('');
 const page = ref(1);
@@ -36,28 +35,6 @@ const filterCategory = async () => {
   ).then(res => res.json())
 }
 
-const showEditPanel = (actor: Actor) => {
-  dialog.open(MovieEditPanel, {
-    props: {
-      ...defaultDialogProps
-    },
-    data: {
-      ...actor
-    }
-  })
-}
-
-const showDeletePanel = (actor: Actor) => {
-  dialog.open(MovieDeletePanel, {
-    props: {
-      ...defaultDialogProps
-    },
-    data: {
-      ...actor
-    }
-  })
-}
-
 const showAddPanel = () => {
   dialog.open(ActorAddPanel, {
     props: {
@@ -72,7 +49,6 @@ onMounted(async () => {
       `${ApiRoutesId.ACTORS}?num=10&page=${page.value}`,
       defaultHeaders
     ).then(res => res.json())
-    research.value = ''
   }
 
   const actorsApi = await fetch(`${ApiRoutesId.ACTORS}?num=10&page=1`, defaultHeaders).then(res => res.json());
@@ -100,7 +76,7 @@ onMounted(async () => {
         <Paginator class="paginator" v-on:page="togglePage" :rows="4" :totalRecords="30" :rowsPerPageOptions="[10]"
           template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink" />
       </div>
-      <Button style="background: #535bf2;" class="add" @click="showAddPanel">Ajouter un acteur</Button>
+      <Button v-if="userMail" style="background: #535bf2;" class="add" @click="showAddPanel">Ajouter un acteur</Button>
     </div>
     <div class="actors-list">
       <ActorCard v-for="actor in filteredActors" :actor="actor" ></ActorCard>
@@ -141,6 +117,7 @@ section {
   width: 100%;
 }
 
+
 .top {
   display: flex;
   justify-content: space-between;
@@ -148,8 +125,16 @@ section {
   margin: 20px 0;
 
   .paginator-container {
-    flex: 0.75;
+    pointer-events: none;
+    position:absolute;
     display: flex;
+    z-index: 0;
+    width: calc(100% - 200px);
+    justify-content: center;
+
+    * {
+      pointer-events: auto;
+    }
   }
 }
 

@@ -2,7 +2,7 @@ import defaultHeaders from '../headers';
 import { ApiRoutesId } from '../../../constants/ApiRoutesId';
 import { MethodsId } from '../../../constants/MethodsId';
 
-export const patchMovie = async ({ actor, category, ...movie }: Movie) => {
+export const patchMovie = async ({ actor, category, image, ...movie }: Movie) => {
   const actorsRoutes = actor.map(({ id }: Partial<Actor>) => ApiRoutesId.RAW_ACTOR + id);
   
   await fetch(ApiRoutesId.MOVIES + `/${movie.id}`, { 
@@ -17,6 +17,7 @@ export const patchMovie = async ({ actor, category, ...movie }: Movie) => {
       actor: [
         ...actorsRoutes,
       ],
+      image: ApiRoutesId.RAW_MEDIA_OBJECT + image.id
     })
   })
 }
