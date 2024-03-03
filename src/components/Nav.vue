@@ -1,10 +1,12 @@
 <script setup lang="ts">
-  import { RouterLink } from 'vue-router';
+  import { RouteRecordRaw, RouterLink } from 'vue-router';
   import router, { routes } from '../router';
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, reactive } from 'vue';
   import { LocalStorageId } from '../constants/LocalStorageId';
+import { LoginsAction } from '../utils/actions/LoginsAction';
   
-  const userMail = ref<string | null>();
+  let userMail = reactive<{value: string|null}>({ value: null});
+  const navRoutes = ref<Array<RouteRecordRaw>>(routes);
 
   const disconnect = (): void => {
     localStorage.clear();
@@ -13,22 +15,34 @@
   }
 
   onMounted(() => {
-    userMail.value = localStorage.getItem(LocalStorageId.USERMAIL);
+    const checkUserMail = () => {
+      userMail.value = localStorage.getItem(LocalStorageId.USERMAIL);
+    }
+
+    checkUserMail();
+    LoginsAction.Add(checkUserMail)
+
+    return () => LoginsAction.Remove(checkUserMail)
   })
 </script>
 
 <template>
   <nav>
     <ul>
-      <li v-for="route in routes">
+      <li v-for="route in navRoutes">
         <router-link :to="{ name: route.name, path: route.path }">
           {{ route.name }}
         </router-link>
       </li>
     </ul>
-    <div v-show="userMail">
-      <span>Compte: {{ userMail }}</span>
+    <div v-show="userMail.value">
+      <span>Compte: {{ userMail.value }}</span>
       <u @click="disconnect">Déconnexion</u>
+    </div>
+    <div v-show="!userMail.value">
+      <router-link :to="{ name: 'Connexion', path: '/login' }">
+          Connexion
+      </router-link>
     </div>
   </nav>
 </template>

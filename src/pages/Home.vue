@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 import defaultHeaders from '../utils/requests/headers';
 import { ApiRoutesId } from '../constants/ApiRoutesId';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
+import MovieCard from '../components/movie/MovieCard.vue';
+import ActorCard from '../components/actor/ActorCard.vue';
 
   const films = ref<Movie[]>();
   const actors = ref<Actor[]>();
@@ -23,30 +23,14 @@ import Button from 'primevue/button';
   <section>
     <strong>Films</strong>
     <div class="films-list">
-      <Card v-for="film in films" style="width: 20em">
-        <template #title>{{ film.title }}</template>
-        <template #content>{{ film.description.slice(0, 75) }}...</template>
-        <template #footer>
-          <router-link  :to="{ path: `/movies/${film.id}` }">
-            <Button icon="pi pi-check" label="Save" >Voir plus</Button>
-          </router-link>
-        </template>
-      </Card>
+      <MovieCard v-for="film in films" :key="film.id" :movie="film" />
     </div>
   </section>
 
   <section>
     <strong>Acteurs</strong>
     <div class="actors-list">
-      <Card v-for="actor in actors" style="width: 25em">
-        <template #title>{{ actor.firstName }} {{ actor.lastName }}</template>
-        <template #subtitle>A joué(e) dans {{ actor.movies.length }} film(s)</template>
-        <template #footer>
-          <router-link  :to="{ path: `/actors/${actor.id}` }">
-            <Button icon="pi pi-check" label="Save" >Voir plus</Button>
-          </router-link>
-        </template>
-      </Card>
+      <ActorCard v-for="actor in actors" :actor="actor" :key="actor" />
     </div>
   </section>
 </template>
