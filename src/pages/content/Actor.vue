@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import defaultHeaders from '../../utils/requests/headers'
   import { onMounted, ref } from 'vue';
-  import { useRoute, RouterLink } from 'vue-router';
+  import { useRoute } from 'vue-router';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
 import MovieCard from '../../components/movie/MovieCard.vue';
 

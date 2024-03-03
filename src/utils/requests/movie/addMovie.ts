@@ -2,10 +2,10 @@ import { ApiRoutesId } from '../../../constants/ApiRoutesId';
 import { MethodsId } from '../../../constants/MethodsId';
 import defaultHeaders from '../headers';
 
-export const addMovie = async ({ actor, category, file, ...movie }: Movie & { file: String|ArrayBuffer }): Promise<void> => {
+export const addMovie = async ({ actor, category, file, ...movie }: Movie & { file: string }): Promise<void> => {
   const actorsRoutes = actor.map(({ id }: Partial<Actor>) => ApiRoutesId.RAW_ACTOR + id);
 
-  const mediaObject = await addMediaObject(file);
+  const mediaObject = await addMediaObject(file as string);
   console.log(mediaObject)
 
   const t = await fetch(ApiRoutesId.MOVIES, { 
@@ -40,6 +40,5 @@ const addMediaObject = async (file: string) => {
     body: formData
   }).then(res => res.json())
 
-  console.log(formData.get('file'))
   return ApiRoutesId.RAW_MEDIA_OBJECT + mediaObject.id;
 }

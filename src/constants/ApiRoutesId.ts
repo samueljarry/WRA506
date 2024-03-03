@@ -1,18 +1,18 @@
-export enum ApiRoutesId {
-  BASE = 'http://localhost:8088/symfony-s5/public/index.php',
-  API = ApiRoutesId.BASE + '/api',
+export class ApiRoutesId {
+  public static readonly BASE = import.meta.env.VITE_API_BASE;
+  public static readonly API = this.BASE + '/api';
   
-  AUTHENTICATION = ApiRoutesId.BASE + '/auth',
+  public static readonly AUTHENTICATION = this.BASE + '/auth';
   
-  MOVIES = ApiRoutesId.API + '/movies',
-  ACTORS = ApiRoutesId.API + '/actors',
-  CATEGORIES = ApiRoutesId.API + '/categories',
-  NATIONALITY = ApiRoutesId.API + '/nationalities',
-  MEDIA_OBJECT = ApiRoutesId.API + '/media_objects',
+  public static readonly MOVIES = this.API + '/movies';
+  public static readonly ACTORS = this.API + '/actors';
+  public static readonly CATEGORIES = this.API + '/categories';
+  public static readonly NATIONALITY = this.API + '/nationalities';
+  public static readonly MEDIA_OBJECT = this.API + '/media_objects';
 
-  RAW_MOVIE = '/symfony-s5/public/index.php/api/movies/',
-  RAW_ACTOR = '/symfony-s5/public/index.php/api/actors/',
-  RAW_CATEGORY = '/symfony-s5/public/index.php/api/categories/',
-  RAW_NATIONALITY = '/symfony-s5/public/index.php/api/nationalities/',
-  RAW_MEDIA_OBJECT = '/symfony-s5/public/index.php/api/media_objects/',
+  public static readonly RAW_MOVIE = '/symfony-s5/public/index.php/api/movies/';
+  public static readonly RAW_ACTOR = '/symfony-s5/public/index.php/api/actors/';
+  public static readonly RAW_CATEGORY = '/symfony-s5/public/index.php/api/categories/';
+  public static readonly RAW_NATIONALITY = '/symfony-s5/public/index.php/api/nationalities/';
+  public static readonly RAW_MEDIA_OBJECT = '/symfony-s5/public/index.php/api/media_objects/';
 }
