@@ -1,24 +1,24 @@
 <script setup lang="ts">
   import Button from 'primevue/button';
-  import Card from 'primevue/card';
   import { useDialog } from 'primevue/usedialog';
   import { onMounted, ref } from 'vue';
-  import MovieEditPanel from '../../components/movie/MovieEditPanel.vue';
-  import MovieDeletePanel from '../../components/movie/MovieDeletePanel.vue';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
   import { defaultDialogProps } from '../../utils/defaultDialogProps';
   import defaultHeaders from '../../utils/requests/headers';
   import Paginator from 'primevue/paginator';
   import InputText from 'primevue/inputtext';
   import { MoviesAction } from '../../utils/actions/MoviesAction';
-import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
+  import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
+  import MovieCard from '../../components/movie/MovieCard.vue';
+  import { LocalStorageId } from '../../constants/LocalStorageId';
 
-  const films = ref<Movie[]>();
-  const categories = ref<Category[]>();
-  const filteredMovies = ref<Movie[]>();
+  const films = ref<Movie[]>([]);
+  const categories = ref<Category[]>([]);
+  const filteredMovies = ref<Movie[]>([]);
   const research = ref('');
   const page = ref(1);
   const dialog = useDialog();
+  const userMail = ref<string | null>(null);
 
   const togglePage = async ({ page: pageNum }: { page: number }) => {
     page.value = pageNum+1;
@@ -36,28 +36,6 @@ import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
     ).then(res => res.json())
   }
 
-  const showEditPanel = (movie: Movie) => {
-    dialog.open(MovieEditPanel, {
-      props: {
-        ...defaultDialogProps
-      },
-      data: {
-        ...movie
-      }
-    })
-  }
-
-  const showDeletePanel = (movie: Movie) => {
-    dialog.open(MovieDeletePanel, {
-      props: {
-        ...defaultDialogProps
-      },
-      data: {
-        ...movie
-      }
-    })
-  }
-
   const showAddPanel = () => {
     dialog.open(MovieAddPanel, {
       props: {
@@ -67,6 +45,7 @@ import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
   }
 
   onMounted( async () => {
+    userMail.value = localStorage.getItem(LocalStorageId.USERMAIL);
     const fetchMovies = async (): Promise<void> => {
       filteredMovies.value = await fetch(
         `${ApiRoutesId.MOVIES}?num=10&page=${page.value}`,
@@ -111,31 +90,25 @@ import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
           template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
         />
       </div>
-      <Button style="background: #535bf2;" class="add" @click="showAddPanel">Ajouter un film</Button>
+      <Button v-if="userMail" style="background: #535bf2" class="add" @click="showAddPanel">Ajouter un film</Button>
     </div>
     <div class="films-list">
-      <Card v-for="movie in filteredMovies" style="width: 25em">
-        <template #title>{{ movie.title }}</template>
-        <template #content>{{ movie.description.slice(0, 75) }}...</template>
-        <template #footer>
-          <div class="card-footer">
-            <router-link  :to="{ path: `/movies/${movie.id}` }">
-              <Button icon="pi pi-check" label="Save" >Voir plus</Button>
-            </router-link>
-            <div class="edit">
-              <Button @click="() => showEditPanel(movie)" icon="pi pi-pencil" />
-            </div>
-            <div class="delete">
-              <Button severity="danger" @click="() => showDeletePanel(movie)" icon="pi pi-trash" />
-            </div>
-          </div>
-        </template>
-      </Card>
+      <MovieCard v-for="movie in filteredMovies" :key="movie.id" :movie="movie" />
     </div>
   </section>
 </template>
 
 <style scoped>
+
+  ::v-deep(.p-card-header) {
+    width: 100%;
+    object-fit: contain; 
+
+    img {
+      width: 100%;
+      border-radius: 4px;
+    }
+  }
   ::v-deep(.p-paginator) {
     gap: 10px;
   }
@@ -175,8 +148,11 @@ import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
     margin: 20px 0;
 
     .paginator-container {
-      flex: 0.75;
+      position:absolute;
       display: flex;
+      z-index: 0;
+      width: calc(100% - 200px);
+      justify-content: center;
     }
   }
 
@@ -276,4 +252,4 @@ import MovieAddPanel from '../../components/movie/MovieAddPanel.vue';
       margin-left: 10px;
     }
   }
-</style>../../utils/requests/headers../../utils/actions/MoviesAction
+</style>

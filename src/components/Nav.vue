@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import { RouterLink } from 'vue-router';
+  import { RouteRecordRaw, RouterLink } from 'vue-router';
   import router, { routes } from '../router';
   import { onMounted, ref } from 'vue';
   import { LocalStorageId } from '../constants/LocalStorageId';
   
   const userMail = ref<string | null>();
+  const navRoutes = ref<Array<RouteRecordRaw>>(routes);
 
   const disconnect = (): void => {
     localStorage.clear();
@@ -20,7 +21,7 @@
 <template>
   <nav>
     <ul>
-      <li v-for="route in routes">
+      <li v-for="route in navRoutes">
         <router-link :to="{ name: route.name, path: route.path }">
           {{ route.name }}
         </router-link>
@@ -29,6 +30,11 @@
     <div v-show="userMail">
       <span>Compte: {{ userMail }}</span>
       <u @click="disconnect">Déconnexion</u>
+    </div>
+    <div v-show="!userMail">
+      <router-link :to="{ name: 'Connexion', path: '/login' }">
+          Connexion
+      </router-link>
     </div>
   </nav>
 </template>

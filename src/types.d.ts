@@ -1,6 +1,7 @@
 declare type Category = {
   name: string;
   id: number;
+  movies: Array<Movie>;
 }
 
 declare type Actor = {
@@ -23,6 +24,13 @@ declare type Movie = {
   title: string;
   director: string;
   actor: Array<Actor>;
+  image: {
+    filePath: string;
+  }
+}
+
+declare type MediaObject = {
+  filePath: string;
 }
 
 declare type Nationality = {

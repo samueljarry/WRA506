@@ -28,17 +28,17 @@ export const routes: RouteRecordRaw[] = [
     component: Categories,
     name: 'Catégories'
   },
-  {
-    path: '/login',
-    component: Login,
-    name: 'Connexion'
-  }
 ]
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
       ...routes,
+      {
+        path: '/login',
+        component: Login,
+        name: 'Connexion'
+      },
       {
         path: '/actors/:id',
         component: Actor,
