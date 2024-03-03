@@ -11,6 +11,7 @@ import ActorCard from '../../components/actor/ActorCard.vue';
 import { ActorsAction } from '../../utils/actions/ActorsAction';
 import ActorAddPanel from '../../components/actor/ActorAddPanel.vue';
 import { LocalStorageId } from '../../constants/LocalStorageId';
+import { debounce } from 'lodash';
 
 const actors = ref<Actor[]>();
 const userMail = ref<string | null>(localStorage.getItem(LocalStorageId.USERMAIL));
@@ -28,12 +29,12 @@ const togglePage = async ({ page: pageNum }: { page: number }) => {
   ).then(res => res.json())
 }
 
-const filterCategory = async () => {
+const filterCategory = debounce(async () => {
   filteredActors.value = await fetch(
     `${ApiRoutesId.ACTORS}?num=10&page=${page.value}&fullName=${research.value}`,
     defaultHeaders
   ).then(res => res.json())
-}
+}, 200)
 
 const showAddPanel = () => {
   dialog.open(ActorAddPanel, {

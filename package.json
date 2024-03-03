@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "primeicons": "^6.0.1",
     "primevue": "^3.46.0",
     "sass": "^1.69.5",

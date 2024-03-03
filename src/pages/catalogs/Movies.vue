@@ -1,7 +1,8 @@
 <script setup lang="ts">
+  import { debounce } from 'lodash'
   import Button from 'primevue/button';
   import { useDialog } from 'primevue/usedialog';
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, reactive } from 'vue';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
   import { defaultDialogProps } from '../../utils/defaultDialogProps';
   import defaultHeaders from '../../utils/requests/headers';
@@ -12,10 +13,9 @@
   import MovieCard from '../../components/movie/MovieCard.vue';
   import { LocalStorageId } from '../../constants/LocalStorageId';
 
-  const films = ref<Movie[]>([]);
   const categories = ref<Category[]>([]);
   const filteredMovies = ref<Movie[]>([]);
-  const research = ref('');
+  const research = reactive({ value: ''});
   const page = ref(1);
   const dialog = useDialog();
   const userMail = ref<string | null>(null);
@@ -29,12 +29,12 @@
     ).then(res => res.json())
   }
 
-  const filterCategory = async () => {
+  const filterCategory = debounce(async () => {
     filteredMovies.value = await fetch(
       `${ApiRoutesId.MOVIES}?title=${research.value}`, 
       defaultHeaders
     ).then(res => res.json())
-  }
+  }, 200); 
 
   const showAddPanel = () => {
     dialog.open(MovieAddPanel, {
@@ -54,8 +54,7 @@
     }
     
     const movies = await fetch(`${ApiRoutesId.MOVIES}?num=10&page=1`, defaultHeaders).then(res => res.json());
-    films.value = movies;
-    filteredMovies.value = films.value;
+    filteredMovies.value = movies;
 
     categories.value = await fetch(
       ApiRoutesId.CATEGORIES, 
@@ -77,7 +76,7 @@
     <div class="top">
       <span  v-if="categories" class="p-input-icon-left">
         <i class="pi pi-search" />
-        <InputText v-model="research" @input="filterCategory" placeholder="Search" />
+        <InputText v-model="research.value" @input="filterCategory" placeholder="Search" />
       </span>
       <div class="paginator-container">
         <Paginator 
