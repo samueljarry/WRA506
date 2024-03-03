@@ -1,11 +1,11 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
-import Home from './views/Home.vue';
-import Actors from './views/catalogs/Actors.vue';
-import Movies from './views/catalogs/Movies.vue';
-import Categories from './views/catalogs/Categories.vue';
-import Actor from './views/content/Actor.vue';
-import Movie from './views/content/Movie.vue';
-import Login from './views/Login.vue';
+import Home from './pages/Home.vue';
+import Actors from './pages/catalogs/Actors.vue';
+import Movies from './pages/catalogs/Movies.vue';
+import Categories from './pages/catalogs/Categories.vue';
+import Actor from './pages/content/Actor.vue';
+import Movie from './pages/content/Movie.vue';
+import Login from './pages/Login.vue';
 
 export const routes: RouteRecordRaw[] = [
   {

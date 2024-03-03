@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import defaultHeaders from '../utils/requests/headers';
 import { ApiRoutesId } from '../constants/ApiRoutesId';
 import MovieCard from '../components/movie/MovieCard.vue';
+import ActorCard from '../components/actor/ActorCard.vue';
 
   const films = ref<Movie[]>();
   const actors = ref<Actor[]>();
