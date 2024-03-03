@@ -1,18 +1,63 @@
-# Vue 3 + TypeScript + Vite
+# WRA506
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+<aside>
+🔗 [Lien de production](https://mmi21c10.mmi-troyes.fr/vue-s5)
 
-## Recommended IDE Setup
+</aside>
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Description du projet
 
-## Type Support For `.vue` Imports in TS
+CRUD en Vue.js géré par des calls API vers une [application Symfony](https://github.com/samueljarry/symfony-s5)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+---
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Architecture
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+**/assets -** Assets
+
+**/components -** Composants Vue
+
+**/constants -** Fichiers de constantes
+
+**/hooks -** Hooks gérant les calls API
+
+**/pages -** Les différentes pages
+
+**/utils -** Contient des Event Dispatcher dans **/actions** et différents morceaux de codes que je réutilisais souvent
+
+---
+
+## Features
+
+### Page Login
+
+- Formulaire de connexion ✅
+- Mot de passe oublié ❌
+
+### Page Home
+
+- 4 derniers films ✅
+- 4 derniers acteurs ✅
+
+### Page Movies
+
+- Affichage des films ✅
+- Recherche ✅
+- Pagination ✅
+- Add, Edit, Delete Movie ✅
+
+### Page Actors
+
+- Affichage des acteurs ✅
+- Recherche ✅
+- Pagination ✅
+- Add, Edit, Delete Actor ✅
+
+### Page Category
+
+- Afficher les catégories ✅
+- Recherche ❌
+- Pagination ❌
+- Add, Edit, Delete Category ❌
+
+### Page Profil ❌
