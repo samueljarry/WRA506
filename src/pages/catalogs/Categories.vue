@@ -16,7 +16,7 @@ import Card from 'primevue/card';
 
 <template>
   <section>
-    <strong>Catégories</strong>
+    <strong>Catégories</strong><br/>
     <strong
       :to="{ path: '/categories' }"
       v-for="category in categories"

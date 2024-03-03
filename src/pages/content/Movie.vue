@@ -3,6 +3,8 @@
   import { onMounted, ref } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
+  import Image from 'primevue/image';
+  import Rating from 'primevue/rating';
 
   const route = useRoute();
   const { id } = route.params;
@@ -37,11 +39,15 @@
 
 <template>
   <section v-show="movie.title">
+    <Image :src="movie.image?.filePath" /><br/>
     <strong>{{ movie.title }}</strong><br />
     <span><b>Date de sortie:</b> {{ date }}</span><br />
     <span><b>Synopsis:</b> {{ movie.description }}</span><br />
     <span><b>Catégorie:</b> <span v-show="movie.category?.name">{{ movie.category?.name }}</span></span><br />
     <span><b>Durée:</b> {{ duration }}</span><br />
+    <span><b>Réalisateur:</b> {{ movie.director }}</span><br />
+    <span><b>Note:</b><Rating readonly id="note" v-model="movie.note" :cancel="false"></Rating></span>
+    <span><b>Nombre d'entrées:</b>{{ movie.entries }}</span><br/>
     <b>Casting</b>
     <div class="casting">
       <router-link 
@@ -55,7 +61,13 @@
   </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+  ::v-deep(.p-image) {
+    img {
+      width: 20%;
+      border-radius: 4px;
+    }
+  }
   strong {
     display: inline-block;
     margin-bottom: 20px;
@@ -87,4 +99,4 @@
     border-radius: 4px;
     margin-bottom: 36px;
   }
-</style>../../utils/requests/headers
+</style>

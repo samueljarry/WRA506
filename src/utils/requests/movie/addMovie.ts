@@ -2,10 +2,13 @@ import { ApiRoutesId } from '../../../constants/ApiRoutesId';
 import { MethodsId } from '../../../constants/MethodsId';
 import defaultHeaders from '../headers';
 
-export const addMovie = async ({ actor, category, ...movie }: Movie): Promise<void> => {
+export const addMovie = async ({ actor, category, file, ...movie }: Movie & { file: String|ArrayBuffer }): Promise<void> => {
   const actorsRoutes = actor.map(({ id }: Partial<Actor>) => ApiRoutesId.RAW_ACTOR + id);
-  
-  await fetch(ApiRoutesId.MOVIES, { 
+
+  const mediaObject = await addMediaObject(file);
+  console.log(mediaObject)
+
+  const t = await fetch(ApiRoutesId.MOVIES, { 
     method: MethodsId.POST,
     headers: {
       ...defaultHeaders.headers,
@@ -17,6 +20,26 @@ export const addMovie = async ({ actor, category, ...movie }: Movie): Promise<vo
       actor: [
         ...actorsRoutes,
       ],
+      image: mediaObject
     })
-  })
+  }).then(res => res.json())
+
+  console.log(t)
+}
+
+const addMediaObject = async (file: string) => {
+  let blob = await (await fetch(file)).blob();
+  const formData = new FormData();
+  formData.append('file', blob);
+
+  const mediaObject = await fetch(ApiRoutesId.MEDIA_OBJECT, {
+    method: MethodsId.POST,
+    headers: {
+      ...defaultHeaders.headers,
+    },
+    body: formData
+  }).then(res => res.json())
+
+  console.log(formData.get('file'))
+  return ApiRoutesId.RAW_MEDIA_OBJECT + mediaObject.id;
 }

@@ -3,6 +3,7 @@
   import { onMounted, ref } from 'vue';
   import { useRoute, RouterLink } from 'vue-router';
   import { ApiRoutesId } from '../../constants/ApiRoutesId';
+import MovieCard from '../../components/movie/MovieCard.vue';
 
   const route = useRoute();
   const { id } = route.params;
@@ -24,15 +25,10 @@
 <template>
   <section v-show="actor.firstName">
     <strong>{{ actor.firstName }} {{ actor.lastName }}</strong><br />
+    <span>Nationalité: {{ actor?.nationality?.name }}</span><br/>
     <b>Filmographie</b>
     <div class="movies-list">
-      <router-link 
-        v-for="movie in actor.movies" 
-        :to="{ path: `/movies/${ movie.id }` }"
-        class="movie"
-      >
-        {{ movie.title }}
-      </router-link>
+      <MovieCard v-for="movie in actor.movies" :key="movie.id" :movie="movie" />
     </div>
   </section>
 </template>
@@ -53,7 +49,7 @@
   .movies-list {
     flex-wrap: wrap;
     display: flex;
-    width: 100%;
+    width: 100lvw;
     gap: 20px;
     margin-bottom: 40px;
   }

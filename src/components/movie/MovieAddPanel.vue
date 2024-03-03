@@ -15,6 +15,8 @@ import { inject, ref, onMounted } from 'vue';
 import { getCategories } from '../../hooks/useCategories';
 import { getActors } from '../../hooks/useActors';
 import { addMovie } from '../../utils/requests/movie/addMovie';
+import FileUpload, { FileUploadSelectEvent } from 'primevue/fileupload';
+
 
 const dialogRef = inject<DynamicDialogOptions>('dialogRef') as DynamicDialogOptions;
 const movie = ref<Partial<Movie>>({
@@ -29,12 +31,25 @@ const movie = ref<Partial<Movie>>({
 });
 const categories = ref<Category[]>([])
 const actors = ref<Partial<Actor>[]>([])
+const file = ref<string | ArrayBuffer>('');
 
 const sendDatas = async (): Promise<void> => {
-  await addMovie(movie.value);
+  await addMovie({ ...movie.value, file: file.value });
   MoviesAction.Dispatch();
 
   dialogRef.value.close();
+}
+
+const onSelect = async ({ files }: FileUploadSelectEvent) => {
+  await fetch(files[0].objectURL)
+    .then(response => response.blob())
+    .then(async (blob) => {
+       const reader = new FileReader();
+        reader.onloadend = function() {
+            file.value = reader.result 
+        }
+        reader.readAsDataURL(blob);
+     })
 }
 
 onMounted(async (): Promise<void> => {
@@ -46,7 +61,6 @@ onMounted(async (): Promise<void> => {
   movie.value.actor = [];
   movie.value.category = categories.value[0]
 })
-
 </script>
 
 <template>
@@ -56,6 +70,10 @@ onMounted(async (): Promise<void> => {
       <strong class="font-bold">Ajouter un film</strong>
     </template>
     <div class="body">
+      <div class="input-field">
+        <label for="note">Note</label>
+        <FileUpload mode="basic" name="demo[]" accept="image/*" :maxFileSize="1000000" @select="onSelect($event)" />
+      </div>
       <div class="input-field">
         <label for="title">Titre</label>
         <InputText id="title" type="text" v-model="movie.title" :value="movie.title"></InputText>
