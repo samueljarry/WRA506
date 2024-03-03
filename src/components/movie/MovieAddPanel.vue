@@ -31,10 +31,10 @@ const movie = ref<Partial<Movie>>({
 });
 const categories = ref<Category[]>([])
 const actors = ref<Partial<Actor>[]>([])
-const file = ref<string | ArrayBuffer>('');
+const file = ref<string>('');
 
 const sendDatas = async (): Promise<void> => {
-  await addMovie({ ...movie.value, file: file.value });
+  await addMovie({ ...movie.value, file: file.value } as Movie & { file: string });
   MoviesAction.Dispatch();
 
   dialogRef.value.close();
@@ -46,7 +46,7 @@ const onSelect = async ({ files }: FileUploadSelectEvent) => {
     .then(async (blob) => {
        const reader = new FileReader();
         reader.onloadend = function() {
-            file.value = reader.result 
+            file.value = reader.result as string
         }
         reader.readAsDataURL(blob);
      })
@@ -186,4 +186,4 @@ onMounted(async (): Promise<void> => {
 
     resize: none;
   }
-}</style>../utils/requests/patchMovie../../utils/actions/MoviesAction../../utils/requests/movie/addMovie
+}</style>../../utils/actions/MoviesAction../../utils/requests/movie/addMovie
