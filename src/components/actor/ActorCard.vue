@@ -1,12 +1,12 @@
 <script setup lang="ts" >
   import { defineProps, ref, onMounted } from 'vue';
   import Card from 'primevue/card';
-import Button from 'primevue/button';
-import { useDialog } from 'primevue/usedialog';
-import ActorEditPanel from './ActorEditPanel.vue';
-import { defaultDialogProps } from '../../utils/defaultDialogProps';
-import { LocalStorageId } from '../../constants/LocalStorageId';
-import ActorDeletePanel from './ActorDeletePanel.vue';
+  import Button from 'primevue/button';
+  import { useDialog } from 'primevue/usedialog';
+  import ActorEditPanel from './ActorEditPanel.vue';
+  import { defaultDialogProps } from '../../utils/defaultDialogProps';
+  import { LocalStorageId } from '../../constants/LocalStorageId';
+  import ActorDeletePanel from './ActorDeletePanel.vue';
 
   type Props = {
     actor: Actor;
@@ -19,7 +19,6 @@ let userMail = ref<string | null>(null);
 
 
 const showEditPanel = () => {
-  console.log(actor)
   dialog.open(ActorEditPanel, {
     props: {
       ...defaultDialogProps

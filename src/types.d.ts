@@ -25,6 +25,7 @@ declare type Movie = {
   director: string;
   actor: Array<Actor>;
   image: {
+    id: number;
     filePath: string;
   }
 }

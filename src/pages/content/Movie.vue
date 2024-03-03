@@ -11,12 +11,7 @@
   
   const date = ref<string>();
   const duration = ref<string>();
-  const movie = ref<Movie | UndefinedObject>({
-    title: undefined,
-    category: {
-      name: undefined
-    },
-  });
+  const movie = ref<Partial<Movie>>({});
   
   onMounted( async () => {
     movie.value = await fetch(
@@ -24,7 +19,7 @@
        defaultHeaders
     ).then((res: Response) => res.json());
 
-    const releaseDate = new Date(movie.value.releaseDate as Date);
+    const releaseDate = new Date(movie.value.releaseDate as unknown as Date);
     const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
     date.value = releaseDate.toLocaleDateString('fr-FR', options)
 

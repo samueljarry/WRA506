@@ -30,7 +30,7 @@ import ActorCard from '../components/actor/ActorCard.vue';
   <section>
     <strong>Acteurs</strong>
     <div class="actors-list">
-      <ActorCard v-for="actor in actors" :actor="actor" :key="actor" />
+      <ActorCard v-for="actor in actors" :actor="actor" :key="actor.id" />
     </div>
   </section>
 </template>
@@ -61,4 +61,4 @@ import ActorCard from '../components/actor/ActorCard.vue';
     border-radius: 4px;
   }
 
-</style>../utils/requests/headers
+</style>

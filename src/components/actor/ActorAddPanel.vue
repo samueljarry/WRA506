@@ -17,15 +17,15 @@ const dialogRef = inject<DynamicDialogOptions>('dialogRef') as DynamicDialogOpti
 const actor = ref<Partial<Actor>>({
   firstName: 'Prénom',
   lastName: 'Nom',
-  nationality: 'Choisir une nationalité',
-  rewards: [],
+  nationality: 'Choisir une nationalité' as unknown as Nationality,
+  rewards: [] as unknown as string,
   movies: [],
 });
 const movies = ref<Movie[]>([]);
 const nationalities = ref<Nationality[]>([]);
 
 const sendDatas = async (): Promise<void> => {
-  await addActor(actor.value);
+  await addActor(actor.value as Actor);
   MoviesAction.Dispatch();
 
   dialogRef.value.close();
@@ -146,4 +146,4 @@ onMounted( async (): Promise<void> => {
     resize: none;
   }
 }
-</style>../utils/requests/patchMovie../../utils/actions/MoviesAction../../utils/requests/movie/addMovie
+</style>../../utils/actions/MoviesAction../../utils/requests/movie/addMovie
