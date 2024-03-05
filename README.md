@@ -1,7 +1,7 @@
 # WRA506
 
 <aside>
-🔗 [Lien de production](https://mmi21c10.mmi-troyes.fr/vue-s5)
+🔗 [Lien de production](https://mmi21c10.mmi-troyes.fr)
 
 </aside>
 
